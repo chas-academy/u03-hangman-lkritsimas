@@ -94,6 +94,11 @@ main {
         li:nth-child(odd) {
             transform: rotate(1deg);
         }
+
+        button.selected {
+            opacity: 0.9;
+            background-color: get-color('green');
+        }
     }
 
     #language {
@@ -112,6 +117,10 @@ main {
 
         button.selected {
             color: get-color('blue');
+        }
+
+        button:disabled {
+            opacity: 1;
         }
     }
 }

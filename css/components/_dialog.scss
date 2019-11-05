@@ -34,6 +34,15 @@
     }
 
     h2 {
-        font-size: 7em;
+        font-size: 3.2em;
+        transition: font-size $transition-fast;
+
+        @include create-breakpoint('sm') {
+            font-size: 5.5em;
+        }
+
+        @include create-breakpoint('md') {
+            font-size: 7em;
+        }
     }
 }
