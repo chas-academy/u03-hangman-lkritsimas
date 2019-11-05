@@ -1,0 +1,17 @@
+{
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "useTabs": false,
+  "endOfLine": "lf",
+  "htmlWhitespaceSensitivity": "ignore",
+  "printWidth": 120,
+  "overrides": [
+    {
+      "files": "*.scss",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}

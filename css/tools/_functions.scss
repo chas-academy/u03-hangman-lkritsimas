@@ -1,0 +1,14 @@
+@function get-color($color, $lightness: null, $alpha: null) {
+    // Get color value from theme
+    $result: map-get($theme-colors, $color);
+
+    @if $lightness {
+        $result: scale-color($result, $lightness: $lightness);
+    }
+
+    @if $alpha {
+        $result: change-color($result, $alpha: $alpha);
+    }
+
+    @return $result;
+}

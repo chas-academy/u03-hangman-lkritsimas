@@ -1,0 +1,19 @@
+// Theme
+$theme-colors: (
+    'green': #89c540,
+    'red': #ff3838,
+    'blue': #406bc4,
+    'gray': #666666,
+    'black': #000000,
+    'white': #ffffff,
+    'offwhite': #f8f9fa
+);
+
+$font-family: 'Pangolin', sans-serif;
+
+$transition-fast: 0.2s cubic-bezier(0.3, 0, 0.15, 1);
+
+$breakpoints: (
+    'xs': 300px,
+    'sm': 486px
+);

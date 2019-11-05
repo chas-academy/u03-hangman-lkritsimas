@@ -1,0 +1,57 @@
+.btn {
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: $font-family;
+    font-size: 20px;
+    color: get-color('black');
+    background-color: get-color('white');
+    text-transform: uppercase;
+
+    border: solid get-color('black');
+    border-width: 4px 3px;
+    border-radius: 75% 10% 90% 10% / 10% 90% 12% 50%;
+    margin: 8px;
+    padding: 8px 16px;
+
+    transition: width $transition-fast, height $transition-fast;
+
+    &:hover {
+        background-color: get-color('black', 90%);
+        transition: 0.1s;
+    }
+
+    &:active {
+        color: get-color('white');
+        background-color: get-color('black', 20%);
+        box-shadow: inset 2px 2px 6px 2px get-color('black', $alpha: 0.35);
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.35;
+    }
+
+    &--flat,
+    &--flat:hover,
+    &--flat:active {
+        background: none;
+        border: none;
+        border-radius: 0;
+    }
+
+    &--letter {
+        width: 46px;
+        height: 46px;
+        padding: 0;
+        margin: 0;
+
+        @include create-breakpoint('sm') {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+        }
+    }
+}
