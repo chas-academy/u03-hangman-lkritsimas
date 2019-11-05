@@ -26,9 +26,16 @@ let sounds = {
 let elDialog = document.querySelector('.dialog');
 let dialogButtons = document.querySelectorAll('.dialog__footer button');
 let elButtonContainer = document.querySelector('#alphabet');
+let elWord = document.querySelector('#word');
+
+let _gameloop;
 
 // Get language (default: English)
 getLanguage();
+
+function main() {
+  if (!isRunning) return;
+}
 
 function guess(event) {
   // Check if not running, guesses have run out or if pressed key is not in alphabet
@@ -70,6 +77,8 @@ function start() {
   isRunning = true;
 
   elDialog.style.display = 'none';
+
+  renderLetters();
 }
 
 // Translation
@@ -148,6 +157,36 @@ function buildLayout() {
 
   // Render alphabet buttons
   renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+}
+
+function renderLetters() {
+  var score = 0;
+  elWord.innerHTML = '';
+
+  for (var i = 0; i < selectedWord.length; i++) {
+    var letter = selectedWord[i];
+
+    var elLetter = document.createElement('span');
+    elLetter.className = 'letter';
+
+    // Render underscores or correctly guessed letter
+    if (guessedLetters.length > 0 && guessedLetters.indexOf(letter) !== -1) {
+      score++;
+      elLetter.innerHTML += '<span class="underline">' + letter + '</span>';
+      elLetter.innerHTML += '_';
+    } else {
+      if (letter === ' ') {
+        score++;
+        elLetter.innerHTML += '<span class="spacer"></span>';
+      } else {
+        elLetter.innerHTML += '_';
+      }
+    }
+    elWord.appendChild(elLetter);
+  }
+
+  // Winner!
+  if (score === selectedWord.length) win();
 }
 
 (function reset() {

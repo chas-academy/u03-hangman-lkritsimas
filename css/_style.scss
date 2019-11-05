@@ -101,6 +101,32 @@ main {
         }
     }
 
+    #word {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 5em;
+        margin-top: -48px;
+        margin-bottom: 16px;
+        text-align: center;
+
+        .letter {
+            position: relative;
+            text-transform: uppercase;
+            padding-right: 4px;
+        }
+
+        .underline {
+            position: absolute;
+            top: 0;
+            left: -2px;
+            right: 0;
+        }
+
+        .spacer {
+            padding: 0 8px;
+        }
+    }
+
     #language,
     #layout {
         ul {
