@@ -1,0 +1,17 @@
+.btn {
+    cursor: pointer;
+    outline: none;
+
+    font-family: $font-family;
+    color: get-color('white');
+    background: get-color('black');
+    border: 0;
+    font-size: 24px;
+    text-transform: uppercase;
+    border-radius: 14px;
+    padding: 8px 16px;
+
+    &:hover {
+        color: 
+    }
+}
