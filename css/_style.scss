@@ -1,0 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  // Since I want this to behave like a proper game, selecting should be disabled
+  user-select: none;
+}

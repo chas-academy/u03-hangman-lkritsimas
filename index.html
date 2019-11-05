@@ -1,12 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hangman</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/utils.js"></script>
 </head>
 <body>
-    
+    <header>
+        <h1>Hangman</h1>
+    </header>
+    <main>
+        <aside id="dialog">
+            <section id="dialog-container"></section>
+        </aside>
+        <section>
+            <h2 id="word" class="flex"></h2>
+            <canvas id="figure"></canvas>
+        </section>
+        <section>
+            <ul id="alphabet"></ul>
+        </section>
+    </main>
+    <footer>
+        Lacki Kritsimas - 2019
+    </footer>
+    <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>
