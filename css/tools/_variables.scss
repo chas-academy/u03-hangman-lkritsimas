@@ -11,9 +11,9 @@ $theme-colors: (
 
 $font-family: 'Pangolin', sans-serif;
 
+$transition-fast: 0.2s cubic-bezier(0.3, 0, 0.15, 1);
+
 $breakpoints: (
-    'sm': 576px
+    'xs': 300px,
+    'sm': 486px
 );
-
-
-$transition-fast: .2s cubic-bezier(0.3, 0, 0.15, 1);
