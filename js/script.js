@@ -1,16 +1,19 @@
 // Available languages
 let languages = ['en', 'sv'];
 
-var selectedWord; // Current word (randomly selected)
-var guessedLetters; // Letters that have been guessed so far
+// Keyboard layout (ABCDEF, QWERTY)
+let _layout;
 
-var guesses; // Attempts before game over
-var guessTime; // Countdown timer
+let selectedWord; // Current word (randomly selected)
+let guessedLetters; // Letters that have been guessed so far
 
-var isRunning; // Is game running?
+let guesses; // Attempts before game over
+let guessTime; // Countdown timer
+
+let isRunning; // Is game running?
 
 // Audio
-var sounds = {
+let sounds = {
   dialogButton: 'dialog-button.mp3',
   alphabetButton: 'alphabet-button.mp3',
   correct: 'correct.mp3',
@@ -28,8 +31,8 @@ let elButtonContainer = document.querySelector('#alphabet');
 getLanguage();
 
 function guess(event) {
-  // Check if guesses have run out or if pressed key is not in alphabet
-  if (guesses === 0 || (event.key && _language.alphabet.indexOf(event.key.toLowerCase()) === -1)) {
+  // Check if not running, guesses have run out or if pressed key is not in alphabet
+  if (!isRunning || guesses === 0 || (event.key && _language.alphabet.indexOf(event.key.toLowerCase()) === -1)) {
     return;
   }
 
@@ -70,7 +73,7 @@ function start() {
 }
 
 // Translation
-(function translate() {
+function translate() {
   let elLanguage = document.querySelector('#language');
 
   elLanguage.querySelector('h3').textContent = _language.language;
@@ -93,6 +96,7 @@ function start() {
     }
 
     button.addEventListener('click', function() {
+      playSound(sounds.dialogButton, 0.05);
       setLanguage(language);
       getLanguage();
       translate();
@@ -110,5 +114,43 @@ function start() {
   ]);
 
   // Render alphabet buttons
-  renderButtons(elButtonContainer, _language.alphabet, guess);
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+}
+
+function getLayout() {
+  if (_layout === null) {
+    setLayout('ABCDEF');
+  }
+
+  _layout = localStorage.getItem('layout');
+}
+
+function setLayout() {
+  localStorage.setItem('layout', this.value);
+  playSound(sounds.dialogButton, 0.05);
+  buildLayout();
+}
+
+function buildLayout() {
+  getLayout();
+
+  // Layout buttons
+  document.querySelectorAll('#layout button').forEach(button => {
+    button.removeEventListener('click', setLayout);
+    button.addEventListener('click', setLayout);
+
+    if (_layout === button.value) {
+      button.classList.add('selected');
+    } else {
+      button.classList.remove('selected');
+    }
+  });
+
+  // Render alphabet buttons
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+}
+
+(function reset() {
+  buildLayout();
+  translate();
 })();

@@ -32,8 +32,13 @@ function playSound(file, volume = 0.25) {
 }
 
 // Render alphabet buttons
-function renderButtons(container, alphabet, callback) {
+function renderButtons(container, alphabet, layout, callback) {
   container.innerHTML = '';
+
+  if (layout === 'ABCDEF') {
+    // Clone and sort alphabet
+    alphabet = alphabet.slice(0).sort();
+  }
 
   for (let i = 0; i < alphabet.length; i++) {
     let elItem = document.createElement('li');
@@ -42,12 +47,14 @@ function renderButtons(container, alphabet, callback) {
     elButton.classList.add('btn--letter');
     elButton.value = alphabet[i];
     elButton.textContent = alphabet[i];
+    elButton.removeEventListener('click', callback);
     elButton.addEventListener('click', callback);
 
     elItem.appendChild(elButton);
     container.appendChild(elItem);
   }
 
+  window.removeEventListener('keyup', callback);
   window.addEventListener('keyup', callback);
 }
 
