@@ -27,23 +27,31 @@ let elButtonContainer = document.querySelector('#alphabet');
 // Get language (default: English)
 getLanguage();
 
-function guessClick() {
-  if (guesses === 0) return;
+function guess(event) {
+  // Check if guesses have run out or if pressed key is not in alphabet
+  if (guesses === 0 || (event.key && _language.alphabet.indexOf(event.key.toLowerCase()) === -1)) {
+    return;
+  }
 
-  var letter = this.value;
+  let letter = this.value || event.key;
+  let elButton = document.querySelector(`button[value=${letter}]`);
+  letter = letter.toLowerCase();
+
+  // Check if letter has already been guessed
+  if (guessedLetters.indexOf(letter) !== -1) return;
 
   // Was the guess right or wrong?
   if (selectedWord.indexOf(letter) === -1) {
     guesses--;
   } else {
-    this.classList.add('selected');
+    elButton.classList.add('selected');
   }
 
   guessedLetters.push(letter);
   // renderLetters();
   // renderCanvas();
   playSound(sounds.alphabetButton);
-  this.disabled = true;
+  elButton.disabled = true;
 }
 
 function start() {
@@ -102,5 +110,5 @@ function start() {
   ]);
 
   // Render alphabet buttons
-  renderButtons(elButtonContainer, _language.alphabet, guessClick);
+  renderButtons(elButtonContainer, _language.alphabet, guess);
 })();

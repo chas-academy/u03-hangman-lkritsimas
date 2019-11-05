@@ -32,7 +32,7 @@ function playSound(file, volume = 0.25) {
 }
 
 // Render alphabet buttons
-function renderButtons(container, alphabet, click) {
+function renderButtons(container, alphabet, callback) {
   container.innerHTML = '';
 
   for (let i = 0; i < alphabet.length; i++) {
@@ -42,11 +42,13 @@ function renderButtons(container, alphabet, click) {
     elButton.classList.add('btn--letter');
     elButton.value = alphabet[i];
     elButton.textContent = alphabet[i];
-    elButton.addEventListener('click', click);
+    elButton.addEventListener('click', callback);
 
     elItem.appendChild(elButton);
     container.appendChild(elItem);
   }
+
+  window.addEventListener('keyup', callback);
 }
 
 // Render dialog
