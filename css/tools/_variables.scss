@@ -1,7 +1,8 @@
 // Theme
-$colors: (
+$theme-colors: (
     'green': #89c540,
     'red': #ff3838,
+    'blue': #406bc4,
     'gray': #666666,
     'black': #000000,
     'white': #ffffff,
@@ -9,3 +10,10 @@ $colors: (
 );
 
 $font-family: 'Pangolin', sans-serif;
+
+$breakpoints: (
+    'sm': 576px
+);
+
+
+$transition-fast: .2s cubic-bezier(0.3, 0, 0.15, 1);

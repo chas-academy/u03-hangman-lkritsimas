@@ -1,8 +1,14 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
 
-  // Since I want this to behave like a proper game, selecting should be disabled
-  user-select: none;
+    // Since I want this to behave like a proper game, selecting should be disabled
+    user-select: none;
+}
+
+*:focus {
+    box-shadow: inset 0 0 8px 1px get-color('blue', $alpha: .75);
+    transition: box-shadow .2s;
 }

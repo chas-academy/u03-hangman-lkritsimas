@@ -1,0 +1,19 @@
+@mixin create-breakpoint($min: null, $max: null) {
+    // Get pixel value(s) from breakpoint map
+    $min: map-get($breakpoints, $min);
+    $max: map-get($breakpoints, $max);
+
+    @if $min and $max {
+        @media only screen and (min-width: $min) and (max-width: $max) {
+            @content;
+        }
+    } @else if $min {
+        @media only screen and (min-width: $min) {
+            @content;
+        }
+    } @else if $max {
+        @media only screen and (max-width: $max - 1) {
+            @content;
+        }
+    }
+}
