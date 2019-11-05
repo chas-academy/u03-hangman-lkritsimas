@@ -1,6 +1,6 @@
 .btn {
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
 
@@ -32,6 +32,14 @@
     &:disabled {
         cursor: default;
         opacity: 0.35;
+    }
+
+    &--flat,
+    &--flat:hover,
+    &--flat:active {
+        background: none;
+        border: none;
+        border-radius: 0;
     }
 
     &--letter {

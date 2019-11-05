@@ -26,9 +26,18 @@ body {
     font-family: $font-family;
 }
 
-header,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-transform: uppercase;
+}
+
+#header,
 main,
-footer {
+#footer {
     max-width: map-get($breakpoints, 'xs');
     margin: 0 auto;
 
@@ -37,13 +46,12 @@ footer {
     }
 }
 
-header {
+#header {
     padding: 48px;
 
     h1 {
         font-size: 3em;
         text-align: center;
-        text-transform: uppercase;
         transition: font-size $transition-fast;
 
         @include create-breakpoint('sm') {
@@ -87,9 +95,27 @@ main {
             transform: rotate(1deg);
         }
     }
+
+    #language {
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        button {
+            text-transform: none;
+            color: get-color('white', -50%);
+            font-size: 16px;
+            margin: 0;
+        }
+
+        button.selected {
+            color: get-color('blue');
+        }
+    }
 }
 
-footer {
+#footer {
     text-align: center;
     padding: 16px;
 }

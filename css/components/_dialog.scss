@@ -1,3 +1,39 @@
 .dialog {
-    
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.76;
+
+        background: get-color('black');
+    }
+
+    &__content {
+        color: get-color('white');
+        background: get-color('black');
+        padding: 24px;
+        border-radius: 24px;
+    }
+
+    &__footer {
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 7em;
+    }
 }
