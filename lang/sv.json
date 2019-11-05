@@ -1,0 +1,13 @@
+{
+  "newGame": "Nytt spel",
+  "startGame": "Starta",
+  "playAgain": "Spela igen",
+  "retry": "Försök igen",
+  "winner": "Vinnare",
+  "yourTime": "Din tid",
+  "language": "Språk",
+  "languages": {
+    "en": "Engelska",
+    "sv": "Svenska"
+  }
+}

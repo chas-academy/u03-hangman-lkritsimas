@@ -106,7 +106,8 @@ main {
             text-transform: none;
             color: get-color('white', -50%);
             font-size: 16px;
-            margin: 0;
+            padding: 0;
+            margin: 8px 16px;
         }
 
         button.selected {
