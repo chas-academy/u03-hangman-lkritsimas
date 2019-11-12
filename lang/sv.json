@@ -1,10 +1,16 @@
 {
   "newGame": "Nytt spel",
+  "gameOver": "Game over",
   "startGame": "Starta",
   "playAgain": "Spela igen",
   "retry": "Försök igen",
   "winner": "Vinnare",
   "yourTime": "Din tid",
+  "theWordWas": "Ordet var",
+  "buttonLayout": "Knapplayout",
+  "sound": "Ljud",
+  "on": "På",
+  "off": "Av",
   "language": "Språk",
   "languages": {
     "en": "Engelska",

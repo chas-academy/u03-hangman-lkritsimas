@@ -1,10 +1,16 @@
 {
   "newGame": "New game",
+  "gameOver": "Game over",
   "startGame": "Start",
   "playAgain": "Play again",
   "retry": "Retry",
   "winner": "Winner",
   "yourTime": "Your time",
+  "theWordWas": "The word was",
+  "buttonLayout": "Button layout",
+  "sound": "Sound",
+  "on": "On",
+  "off": "Off",
   "language": "Language",
   "languages": {
     "en": "English",
