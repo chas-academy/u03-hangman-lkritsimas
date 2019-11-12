@@ -19,6 +19,18 @@ function getLanguage() {
   xhr.send();
 }
 
+// Renders an image on canvas
+function renderImage(ctx, file) {
+  var img = new Image();
+
+  img.onload = function() {
+    img.width = 400;
+    img.height = 400;
+    ctx.drawImage(img, 0, 0);
+  };
+  img.src = file;
+}
+
 // Set language
 function setLanguage(language) {
   localStorage.setItem('language', language);
@@ -26,6 +38,7 @@ function setLanguage(language) {
 
 // Play a sound file
 function playSound(file, volume = 0.25) {
+  if (!sound || localStorage.getItem('sound') == false) return;
   var audio = new Audio('sound/' + file);
   audio.volume = volume;
   audio.play();
@@ -58,6 +71,17 @@ function renderButtons(container, alphabet, layout, callback) {
   window.addEventListener('keyup', callback);
 }
 
+// Format time
+function formatTime(time) {
+  var minutes = parseInt(time / 60, 10);
+  var seconds = parseInt(time % 60, 10);
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+
+  return { minutes: minutes, seconds: seconds };
+}
+
 // Render dialog
 function renderDialog(title, message = null, buttons, className = null) {
   let container = document.querySelector('.dialog__content');
@@ -71,7 +95,7 @@ function renderDialog(title, message = null, buttons, className = null) {
     let elButton = document.createElement('button');
     elButton.classList.add('btn');
     elButton.textContent = button.text;
-    elButton.addEventListener('click', button.click);
+    elButton.addEventListener('click', button.callback);
 
     footer.appendChild(elButton);
   }
@@ -79,12 +103,16 @@ function renderDialog(title, message = null, buttons, className = null) {
   heading.textContent = title;
   container.prepend(heading);
 
-  if (className) container.className = className;
-
+  if (className) {
+    container.classList.remove(className);
+    container.classList.add(className);
+  }
   // Render message if set
   if (message) {
     let elMessage = document.createElement('p');
-    elMessage.textContent = message;
+    elMessage.innerHTML = message;
     container.appendChild(elMessage);
   }
+
+  document.querySelector('.dialog').style.display = 'flex';
 }

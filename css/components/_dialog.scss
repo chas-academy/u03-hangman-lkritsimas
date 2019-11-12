@@ -33,6 +33,24 @@
         text-align: center;
     }
 
+    &--lose {
+        h2 {
+            color: get-color('red');
+        }
+    }
+
+    &--win {
+        h2 {
+            color: get-color('green');
+        }
+    }
+
+    .word {
+        font-size: 20px;
+        color: get-color('blue');
+        margin-left: 8px;
+    }
+
     h2 {
         font-size: 3.2em;
         transition: font-size $transition-fast;
