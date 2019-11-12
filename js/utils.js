@@ -66,6 +66,11 @@ function renderButtons(container, alphabet, layout, callback) {
     elButton.removeEventListener('click', callback);
     elButton.addEventListener('click', callback);
 
+    // Dialog focus trap
+    if (document.querySelector('.dialog').style.display !== 'none') {
+      elButton.tabIndex = -1;
+    }
+
     elItem.appendChild(elButton);
     container.appendChild(elItem);
   }
@@ -85,15 +90,16 @@ function formatTime(time) {
   return { minutes: minutes, seconds: seconds };
 }
 
-// Fixes stupid bug where overlay background does not cover entire body
 function dialogHandler(event) {
   let dialog = document.querySelector('.dialog');
 
   if (event.type === 'keydown' && dialog.style.display !== 'none') {
     if (event.code === 'Enter') {
+      // Start the game
       start();
     }
   } else {
+    // Fixes stupid bug where overlay background does not cover entire body
     let body = document.body;
     let html = document.documentElement;
 

@@ -219,13 +219,15 @@ function translate() {
     }
   });
 
-  // Render dialog
-  renderDialog(_language.newGame, null, [
-    {
-      text: _language.startGame,
-      callback: start
-    }
-  ]);
+  // Render dialog if no classes are set (other dialogs are already open)
+  if (document.querySelector('.dialog__content').classList.length === 1) {
+    renderDialog(_language.newGame, null, [
+      {
+        text: _language.startGame,
+        callback: start
+      }
+    ]);
+  }
 
   // Render alphabet buttons
   renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
@@ -310,6 +312,7 @@ function win() {
     [{ text: _language.playAgain, callback: start }],
     'dialog--win'
   );
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
   playSound(sounds.correct);
 }
 
@@ -328,6 +331,7 @@ function end() {
     ],
     'dialog--lose'
   );
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
   playSound(sounds.incorrect);
 }
 
