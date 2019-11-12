@@ -33,7 +33,39 @@
         text-align: center;
     }
 
+    &__message {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    &--lose {
+        h2 {
+            color: get-color('red');
+        }
+    }
+
+    &--win {
+        h2 {
+            color: get-color('green');
+        }
+    }
+
+    .word {
+        font-size: 20px;
+        color: get-color('blue');
+        margin-left: 4px;
+    }
+
     h2 {
-        font-size: 7em;
+        font-size: 3.2em;
+        transition: font-size $transition-fast;
+
+        @include create-breakpoint('sm') {
+            font-size: 5.5em;
+        }
+
+        @include create-breakpoint('md') {
+            font-size: 7em;
+        }
     }
 }

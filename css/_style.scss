@@ -22,7 +22,7 @@ body {
     min-height: 100vh;
 
     color: get-color('black');
-    background: get-color('white');
+    background-color: get-color('offwhite');
     font-family: $font-family;
 }
 
@@ -33,6 +33,15 @@ h4,
 h5,
 h6 {
     text-transform: uppercase;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.text-red {
+    color: get-color('red');
 }
 
 #header,
@@ -69,19 +78,6 @@ main {
         flex-wrap: wrap;
     }
 
-    canvas {
-        width: 100%;
-        height: 300px;
-        transition: $transition-fast;
-
-        border: 4px solid get-color('black');
-        margin-bottom: 16px;
-
-        @include create-breakpoint('sm') {
-            height: 400px;
-        }
-    }
-
     #alphabet {
         li {
             margin: 2px;
@@ -94,9 +90,67 @@ main {
         li:nth-child(odd) {
             transform: rotate(1deg);
         }
+
+        button.selected {
+            opacity: 0.9;
+            background-color: get-color('green');
+        }
     }
 
-    #language {
+    #word {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 5em;
+        margin-top: -48px;
+        margin-bottom: 16px;
+
+        .letter {
+            position: relative;
+            text-transform: uppercase;
+            padding-right: 4px;
+        }
+
+        .underline {
+            position: absolute;
+            top: 0;
+            left: -2px;
+            right: 0;
+        }
+
+        .spacer {
+            padding: 0 8px;
+        }
+    }
+
+    // Image container
+    .figurewrapper {
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 300px;
+        margin-bottom: 16px;
+        background-color: get-color('white');
+        border: 4px solid get-color('black');
+
+        @include create-breakpoint('sm') {
+            height: 400px;
+        }
+
+        // Countdown timer
+        #timer {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
+        }
+    }
+
+    #language,
+    #layout,
+    #sound {
         ul {
             display: flex;
             flex-wrap: wrap;
@@ -106,11 +160,16 @@ main {
             text-transform: none;
             color: get-color('white', -50%);
             font-size: 16px;
-            margin: 0;
+            padding: 0;
+            margin: 8px 16px;
         }
 
         button.selected {
             color: get-color('blue');
+        }
+
+        button:disabled {
+            opacity: 1;
         }
     }
 }
