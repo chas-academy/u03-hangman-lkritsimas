@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Hangman</title>
-    <link href="https://fonts.googleapis.com/css?family=Pangolin&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-  </head>
-  <body>
-    <header id="header">
-      <h1>Hangman</h1>
-    </header>
-    <main>
-      <aside class="dialog">
-        <section class="dialog__content">
-          <h2>New game</h2>
-          <section id="language">
-            <h3>Language</h3>
-            <ul></ul>
-          </section>
-          <section id="layout">
-            <h3>Layout</h3>
-            <ul>
-              <li><button class="btn btn--flat selected" value="ABCDEF">ABCDEF</button></li>
-              <li><button class="btn btn--flat" value="QWERTY">QWERTY</button></li>
-            </ul>
-          </section>
-          <section id="sound">
-            <h3>Sound</h3>
-            <ul>
-              <li><button class="btn btn--flat selected" value="1">On</button></li>
-              <li><button class="btn btn--flat" value="0">Off</button></li>
-            </ul>
-          </section>
-          <footer class="dialog__footer"></footer>
-        </section>
-      </aside>
-      <section>
-        <h2 id="word"></h2>
-        <div class="figurewrapper">
-          <p id="timer"></p>
-          <figure></figure>
-        </div>
-      </section>
-      <section>
-        <ul id="alphabet"></ul>
-      </section>
-    </main>
-    <footer id="footer">
-      Lacki Kritsimas &ndash; 2019
-    </footer>
-    <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Hangman</title>
+        <link href="https://fonts.googleapis.com/css?family=Pangolin&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+    </head>
+    <body>
+        <header id="header">
+            <h1>Hangman</h1>
+        </header>
+        <main>
+            <aside class="dialog">
+                <section class="dialog__content">
+                    <h2>New game</h2>
+                    <section id="language">
+                        <h3>Language</h3>
+                        <ul></ul>
+                    </section>
+                    <section id="layout">
+                        <h3>Layout</h3>
+                        <ul>
+                            <li><button class="btn btn--flat selected" value="ABCDEF">ABCDEF</button></li>
+                            <li><button class="btn btn--flat" value="QWERTY">QWERTY</button></li>
+                        </ul>
+                    </section>
+                    <section id="sound">
+                        <h3>Sound</h3>
+                        <ul>
+                            <li><button class="btn btn--flat selected" value="1">On</button></li>
+                            <li><button class="btn btn--flat" value="0">Off</button></li>
+                        </ul>
+                    </section>
+                    <footer class="dialog__footer"></footer>
+                </section>
+            </aside>
+            <section>
+                <h2 id="word"></h2>
+                <div class="figurewrapper">
+                    <p id="timer"></p>
+                    <figure></figure>
+                </div>
+            </section>
+            <section>
+                <ul id="alphabet"></ul>
+            </section>
+        </main>
+        <footer id="footer">
+            Lacki Kritsimas &ndash; 2019
+        </footer>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
 </html>
