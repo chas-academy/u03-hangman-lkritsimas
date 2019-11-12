@@ -33,6 +33,11 @@
         text-align: center;
     }
 
+    &__message {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
     &--lose {
         h2 {
             color: get-color('red');

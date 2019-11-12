@@ -6,7 +6,7 @@ let _layout;
 
 let selectedWord; // Current word (randomly selected)
 let guessedLetters; // Letters that have been guessed so far
-var winCount = 0;
+let winCount = 0;
 let guesses; // Attempts before game over
 let guessTime; // Countdown timer
 let startTime;
@@ -15,7 +15,7 @@ let prevSecond; // Previous second since current time
 let isRunning; // Is game running?
 
 // Audio
-var sound = true;
+let soundEnabled = true;
 
 let sounds = {
   dialogButton: 'dialog-button.mp3',
@@ -27,7 +27,7 @@ let sounds = {
 };
 
 // Visuals
-var images = {
+let images = {
   0: 'img/6.jpg',
   1: 'img/5.jpg',
   2: 'img/4.jpg',
@@ -37,14 +37,18 @@ var images = {
 };
 
 // Elements
-var canvas = document.getElementById('figure');
-var ctx = canvas.getContext('2d');
+let elFigure = document.querySelector('.figurewrapper figure');
+let elTimer = document.querySelector('#timer');
 let elDialog = document.querySelector('.dialog');
 let dialogButtons = document.querySelectorAll('.dialog__footer button');
 let elButtonContainer = document.querySelector('#alphabet');
 let elWord = document.querySelector('#word');
 
-var frameRate = 1000 / 60; // Target FPS
+let speed = 1000; // Refresh interval every X ms
+// let time = 60 * 5; // 5 minutes
+let time = 12;
+let timeDecrease = 30; // Decrease time by X every win
+
 let _time;
 let _elapsed;
 let _gameloop;
@@ -52,7 +56,7 @@ let _gameloop;
 function main() {
   if (!isRunning) return;
 
-  var now = +new Date();
+  let now = +new Date();
   _time = Math.round(guessTime - (now - startTime) * 0.001);
   _elapsed = Math.round(((now - startTime) * 0.001) % 60);
 
@@ -64,33 +68,32 @@ function render() {
   /*
    *   Render countdown timer
    */
-  var timeStr = formatTime(_time);
+  let timeStr = formatTime(_time);
 
   if (_time <= 0 || guesses === 0) end();
 
-  var txt = timeStr.minutes + ':' + timeStr.seconds;
+  let txt = `${timeStr.minutes} : ${timeStr.seconds}`;
 
   // Clear canvas if needed
-  if (guesses === 6) ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  ctx.clearRect(canvas.width - ctx.measureText(txt).width - 10, 5, ctx.measureText(txt).width, 30);
-  ctx.fillStyle = '#000000';
+  if (guesses === 6) elFigure.innerHTML = '';
 
   // Change fill style to red when time remaining is 10 seconds or less
   if (_time > 0 && _time <= 10) {
-    ctx.fillStyle = '#ff3838';
+    elTimer.classList.add('text-red');
+
     // Play tick tock sound
     if (_elapsed !== prevSecond) {
       playSound(prevSecond % 2 ? sounds.tick : sounds.tock);
-      prevSecond = _elapsed;
     }
   }
-  ctx.fillText(txt, canvas.width - ctx.measureText(txt).width - 10, 30);
+
+  prevSecond = _elapsed;
+  elTimer.innerText = txt;
 }
 
 // Draw canvas
-function renderCanvas() {
-  if (guesses >= 0 && guesses < 6) renderImage(ctx, images[guesses]);
+function renderFigure() {
+  if (guesses >= 0 && guesses < 6) renderImage(elFigure, images[guesses]);
 }
 
 function guess(event) {
@@ -115,22 +118,24 @@ function guess(event) {
 
   guessedLetters.push(letter);
   renderLetters();
-  renderCanvas();
+  renderFigure();
   playSound(sounds.alphabetButton);
   elButton.disabled = true;
 }
 
-// Increase difficulty by decreasing guess time
-function increaseDifficulty(time, decreaseAmount) {
+// Set difficulty by decreasing guess time
+function setDifficulty(time, decreaseAmount) {
   guessTime = time - winCount * decreaseAmount;
 
-  if (guessTime <= 0) guessTime = 60 * 1;
+  if (guessTime <= 0) guessTime = timeDecrease;
 }
 
 function start() {
   playSound(sounds.dialogButton);
 
-  increaseDifficulty(60 * 5, 30);
+  elTimer.classList.remove('text-red');
+
+  setDifficulty(time, timeDecrease);
 
   // Get a random word from word list
   selectedWord = _language.wordList[Math.floor(Math.random() * _language.wordList.length)];
@@ -142,17 +147,18 @@ function start() {
   isRunning = true;
 
   elDialog.style.display = 'none';
-  ctx.font = '24px monospace';
 
   renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
   renderLetters();
 
-  _gameloop = setInterval(main, 1000 / frameRate);
+  clearInterval(_gameloop);
+  main();
+  _gameloop = setInterval(main, speed);
 }
 
 function soundHandler() {
-  sound = this.value;
-  localStorage.sound = this.value;
+  soundEnabled = this.value;
+  localStorage.soundEnabled = this.value;
   playSound(sounds.dialogButton, 0.05);
   translate();
 }
@@ -193,6 +199,7 @@ function translate() {
 
   let elSound = document.querySelector('#sound');
   elSound.querySelector('h3').textContent = _language.sound;
+  soundEnabled = localStorage.getItem('soundEnabled');
 
   // Sound buttons
   document.querySelectorAll('#sound button').forEach(function(button) {
@@ -205,7 +212,7 @@ function translate() {
       button.textContent = _language.off;
     }
 
-    if (button.value == sound) {
+    if (button.value == soundEnabled) {
       button.classList.add('selected');
     } else {
       button.classList.remove('selected');
@@ -263,13 +270,13 @@ function buildLayout() {
 }
 
 function renderLetters() {
-  var score = 0;
+  let score = 0;
   elWord.innerHTML = '';
 
-  for (var i = 0; i < selectedWord.length; i++) {
-    var letter = selectedWord[i];
+  for (let i = 0; i < selectedWord.length; i++) {
+    let letter = selectedWord[i];
 
-    var elLetter = document.createElement('span');
+    let elLetter = document.createElement('span');
     elLetter.className = 'letter';
 
     // Render underscores or correctly guessed letter
@@ -296,7 +303,7 @@ function renderLetters() {
 function win() {
   winCount++;
   isRunning = false;
-  var time = formatTime(_elapsed);
+  let time = formatTime(_elapsed);
   renderDialog(
     _language.winner,
     `${_language.yourTime}: ${time.minutes}:${time.seconds}`,
@@ -309,6 +316,7 @@ function win() {
 // End game
 function end() {
   isRunning = false;
+  winCount = 0;
   renderDialog(
     _language.gameOver,
     `${_language.theWordWas} <span class="word">${selectedWord}</span>`,

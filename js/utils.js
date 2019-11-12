@@ -19,15 +19,18 @@ function getLanguage() {
   xhr.send();
 }
 
-// Renders an image on canvas
-function renderImage(ctx, file) {
-  var img = new Image();
+// Renders an image
+function renderImage(element, file) {
+  let img;
 
-  img.onload = function() {
-    img.width = 400;
-    img.height = 400;
-    ctx.drawImage(img, 0, 0);
-  };
+  // Create an image if it doesn't already exist
+  if (element.querySelector('#image') === null) {
+    img = document.createElement('img');
+    img.id = 'image';
+    element.appendChild(img);
+  }
+
+  img = element.querySelector('#image');
   img.src = file;
 }
 
@@ -38,8 +41,8 @@ function setLanguage(language) {
 
 // Play a sound file
 function playSound(file, volume = 0.25) {
-  if (!sound || localStorage.getItem('sound') == false) return;
-  var audio = new Audio('sound/' + file);
+  if (!soundEnabled || localStorage.getItem('soundEnabled') == false) return;
+  let audio = new Audio('sound/' + file);
   audio.volume = volume;
   audio.play();
 }
@@ -73,8 +76,8 @@ function renderButtons(container, alphabet, layout, callback) {
 
 // Format time
 function formatTime(time) {
-  var minutes = parseInt(time / 60, 10);
-  var seconds = parseInt(time % 60, 10);
+  let minutes = parseInt(time / 60, 10);
+  let seconds = parseInt(time % 60, 10);
 
   minutes = minutes < 10 ? '0' + minutes : minutes;
   seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -82,12 +85,42 @@ function formatTime(time) {
   return { minutes: minutes, seconds: seconds };
 }
 
+// Fixes stupid bug where overlay background does not cover entire body
+function dialogHandler(event) {
+  let dialog = document.querySelector('.dialog');
+
+  if (event.type === 'keydown' && dialog.style.display !== 'none') {
+    if (event.code === 'Enter') {
+      start();
+    }
+  } else {
+    let body = document.body;
+    let html = document.documentElement;
+
+    let height = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
+    dialog.style.height = `${height}px`;
+  }
+}
+
 // Render dialog
 function renderDialog(title, message = null, buttons, className = null) {
   let container = document.querySelector('.dialog__content');
   let heading = container.querySelector('h2');
-
   let footer = container.querySelector('.dialog__footer');
+
+  window.removeEventListener('load', dialogHandler);
+  window.removeEventListener('resize', dialogHandler);
+  window.removeEventListener('keydown', dialogHandler);
+  window.addEventListener('load', dialogHandler);
+  window.addEventListener('resize', dialogHandler);
+  window.addEventListener('keydown', dialogHandler);
+
   footer.innerHTML = '';
 
   // Loop through buttons and set up listener
@@ -104,14 +137,22 @@ function renderDialog(title, message = null, buttons, className = null) {
   container.prepend(heading);
 
   if (className) {
-    container.classList.remove(className);
+    container.className = 'dialog__content';
     container.classList.add(className);
   }
+
   // Render message if set
   if (message) {
-    let elMessage = document.createElement('p');
+    let elMessage;
+
+    if (!document.querySelector('.dialog__message')) {
+      elMessage = document.createElement('p');
+      elMessage.className = 'dialog__message';
+      container.insertBefore(elMessage, container.querySelector('h2').nextSibling);
+    }
+
+    elMessage = document.querySelector('.dialog__message');
     elMessage.innerHTML = message;
-    container.appendChild(elMessage);
   }
 
   document.querySelector('.dialog').style.display = 'flex';

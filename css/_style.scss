@@ -35,6 +35,15 @@ h6 {
     text-transform: uppercase;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.text-red {
+    color: get-color('red');
+}
+
 #header,
 main,
 #footer {
@@ -67,19 +76,6 @@ main {
         list-style: none;
         display: flex;
         flex-wrap: wrap;
-    }
-
-    canvas {
-        width: 100%;
-        height: 300px;
-        transition: $transition-fast;
-
-        border: 4px solid get-color('black');
-        margin-bottom: 16px;
-
-        @include create-breakpoint('sm') {
-            height: 400px;
-        }
     }
 
     #alphabet {
@@ -124,6 +120,31 @@ main {
 
         .spacer {
             padding: 0 8px;
+        }
+    }
+
+    // Image container
+    .figurewrapper {
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 300px;
+        margin-bottom: 16px;
+        background-color: get-color('white');
+        border: 4px solid get-color('black');
+
+        @include create-breakpoint('sm') {
+            height: 400px;
+        }
+
+        // Countdown timer
+        #timer {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 24px;
         }
     }
 

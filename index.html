@@ -7,16 +7,12 @@
     <title>Hangman</title>
     <link href="https://fonts.googleapis.com/css?family=Pangolin&display=swap" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="css/main.css" />
-    <script type="text/javascript" src="js/utils.js"></script>
   </head>
   <body>
     <header id="header">
       <h1>Hangman</h1>
     </header>
     <main>
-      <!-- <aside id="dialog">
-                <section id="dialog-container"></section>
-            </aside> -->
       <aside class="dialog">
         <section class="dialog__content">
           <h2>New game</h2>
@@ -43,7 +39,10 @@
       </aside>
       <section>
         <h2 id="word"></h2>
-        <canvas id="figure" width="400" height="400"></canvas>
+        <div class="figurewrapper">
+          <p id="timer"></p>
+          <figure></figure>
+        </div>
       </section>
       <section>
         <ul id="alphabet"></ul>
@@ -52,6 +51,7 @@
     <footer id="footer">
       Lacki Kritsimas &ndash; 2019
     </footer>
+    <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
   </body>
 </html>
