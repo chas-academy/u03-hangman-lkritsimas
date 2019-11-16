@@ -226,11 +226,11 @@ function end() {
   playSound(sounds.incorrect);
 }
 
-// Get language (default: English)
-getLanguage();
-isSoundEnabled();
-
-(function reset() {
+// Initialize game
+(function init() {
+  // Get language (default: English)
+  getLanguage();
+  isSoundEnabled();
   buildLayout();
   translate();
 })();

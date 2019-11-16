@@ -1,13 +1,11 @@
 // Main render
 function render() {
-  /*
-   *   Render countdown timer
-   */
-  let timeStr = formatTime(_time);
+  // Get formatted time object
+  let formattedTime = formatTime(_time);
+  let currentTime = `${formattedTime.minutes} : ${formattedTime.seconds}`;
 
+  // End game if time or guesses have run out
   if (_time <= 0 || guesses === 0) end();
-
-  let txt = `${timeStr.minutes} : ${timeStr.seconds}`;
 
   // Clear figure if game is reset
   if (guesses === 6) elFigure.innerHTML = '';
@@ -23,7 +21,7 @@ function render() {
   }
 
   prevSecond = _elapsed;
-  elTimer.innerText = txt;
+  elTimer.innerText = currentTime;
 }
 
 // Draw figure
@@ -86,6 +84,7 @@ function renderButtons(container, alphabet, layout, callback) {
     alphabet = alphabet.slice(0).sort();
   }
 
+  // Loop through alphabet and create buttons
   for (let i = 0; i < alphabet.length; i++) {
     let elItem = document.createElement('li');
     let elButton = document.createElement('button');
