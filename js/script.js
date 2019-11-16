@@ -1,22 +1,39 @@
 // Available languages
 let languages = ['en', 'sv'];
 
+// Current language
+let _language;
 // Keyboard layout (ABCDEF, QWERTY)
 let _layout;
 
-let selectedWord; // Current word (randomly selected)
-let guessedLetters; // Letters that have been guessed so far
+// Current word (randomly selected)
+let selectedWord;
+// Letters that have been guessed so far
+let guessedLetters;
+// How many times in a row has the player won?
 let winCount = 0;
-let guesses; // Attempts before game over
-let guessTime; // Countdown timer
+// Attempts before game is over
+let guesses;
+// Countdown timer
+let guessTime;
+// When did the game start?
 let startTime;
-let prevSecond; // Previous second since current time
+// Previous second since current time (needed for the final 10 seconds)
+let prevSecond;
+// Is the game running?
+let isRunning;
 
-let isRunning; // Is game running?
+// Game options
+let speed = 1000; // Refresh interval every X ms
+let time = 60 * 5; // 5 minute timer
+let timeDecrease = 30; // Decrease time by X every win
+
+let _time;
+let _elapsed;
+let _gameloop;
 
 // Audio
 let soundEnabled = true;
-
 let sounds = {
   dialogButton: 'dialog-button.mp3',
   alphabetButton: 'alphabet-button.mp3',
@@ -44,15 +61,6 @@ let dialogButtons = document.querySelectorAll('.dialog__footer button');
 let elButtonContainer = document.querySelector('#alphabet');
 let elWord = document.querySelector('#word');
 
-let speed = 1000; // Refresh interval every X ms
-// let time = 60 * 5; // 5 minutes
-let time = 12;
-let timeDecrease = 30; // Decrease time by X every win
-
-let _time;
-let _elapsed;
-let _gameloop;
-
 function main() {
   if (!isRunning) return;
 
@@ -61,39 +69,6 @@ function main() {
   _elapsed = Math.round(((now - startTime) * 0.001) % 60);
 
   render();
-}
-
-// Main render
-function render() {
-  /*
-   *   Render countdown timer
-   */
-  let timeStr = formatTime(_time);
-
-  if (_time <= 0 || guesses === 0) end();
-
-  let txt = `${timeStr.minutes} : ${timeStr.seconds}`;
-
-  // Clear canvas if needed
-  if (guesses === 6) elFigure.innerHTML = '';
-
-  // Change fill style to red when time remaining is 10 seconds or less
-  if (_time > 0 && _time <= 10) {
-    elTimer.classList.add('text-red');
-
-    // Play tick tock sound
-    if (_elapsed !== prevSecond) {
-      playSound(prevSecond % 2 ? sounds.tick : sounds.tock);
-    }
-  }
-
-  prevSecond = _elapsed;
-  elTimer.innerText = txt;
-}
-
-// Draw canvas
-function renderFigure() {
-  if (guesses >= 0 && guesses < 6) renderImage(elFigure, images[guesses]);
 }
 
 function guess(event) {
@@ -123,13 +98,6 @@ function guess(event) {
   elButton.disabled = true;
 }
 
-// Set difficulty by decreasing guess time
-function setDifficulty(time, decreaseAmount) {
-  guessTime = time - winCount * decreaseAmount;
-
-  if (guessTime <= 0) guessTime = timeDecrease;
-}
-
 function start() {
   playSound(sounds.dialogButton);
 
@@ -154,13 +122,6 @@ function start() {
   clearInterval(_gameloop);
   main();
   _gameloop = setInterval(main, speed);
-}
-
-function soundHandler() {
-  soundEnabled = this.value;
-  localStorage.soundEnabled = this.value;
-  playSound(sounds.dialogButton, 0.05);
-  translate();
 }
 
 // Translation
@@ -233,22 +194,6 @@ function translate() {
   renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
 }
 
-// Get button layout
-function getLayout() {
-  if (_layout === null) {
-    setLayout('ABCDEF');
-  }
-
-  _layout = localStorage.getItem('layout');
-}
-
-// Set button layout
-function setLayout() {
-  localStorage.setItem('layout', this.value);
-  playSound(sounds.dialogButton, 0.05);
-  buildLayout();
-}
-
 // Build button layout
 function buildLayout() {
   getLayout();
@@ -271,36 +216,6 @@ function buildLayout() {
   renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
 }
 
-function renderLetters() {
-  let score = 0;
-  elWord.innerHTML = '';
-
-  for (let i = 0; i < selectedWord.length; i++) {
-    let letter = selectedWord[i];
-
-    let elLetter = document.createElement('span');
-    elLetter.className = 'letter';
-
-    // Render underscores or correctly guessed letter
-    if (guessedLetters.length > 0 && guessedLetters.indexOf(letter) !== -1) {
-      score++;
-      elLetter.innerHTML += '<span class="underline">' + letter + '</span>';
-      elLetter.innerHTML += '_';
-    } else {
-      if (letter === ' ') {
-        score++;
-        elLetter.innerHTML += '<span class="spacer"></span>';
-      } else {
-        elLetter.innerHTML += '_';
-      }
-    }
-    elWord.appendChild(elLetter);
-  }
-
-  // Winner!
-  if (score === selectedWord.length) win();
-}
-
 // Player won
 function win() {
   winCount++;
@@ -316,7 +231,7 @@ function win() {
   playSound(sounds.correct);
 }
 
-// End game
+// Player lost
 function end() {
   isRunning = false;
   winCount = 0;

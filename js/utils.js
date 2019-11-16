@@ -1,5 +1,3 @@
-let _language;
-
 // Get language from /lang/*.json
 function getLanguage() {
   let xhr = new XMLHttpRequest();
@@ -19,24 +17,32 @@ function getLanguage() {
   xhr.send();
 }
 
-// Renders an image
-function renderImage(element, file) {
-  let img;
-
-  // Create an image if it doesn't already exist
-  if (element.querySelector('#image') === null) {
-    img = document.createElement('img');
-    img.id = 'image';
-    element.appendChild(img);
-  }
-
-  img = element.querySelector('#image');
-  img.src = file;
-}
-
 // Set language
 function setLanguage(language) {
   localStorage.setItem('language', language);
+}
+
+// Get button layout
+function getLayout() {
+  if (_layout === null) {
+    setLayout('ABCDEF');
+  }
+
+  _layout = localStorage.getItem('layout');
+}
+
+// Set button layout
+function setLayout() {
+  localStorage.setItem('layout', this.value);
+  playSound(sounds.dialogButton, 0.05);
+  buildLayout();
+}
+
+// Set difficulty by decreasing guess time
+function setDifficulty(time, decreaseAmount) {
+  guessTime = time - winCount * decreaseAmount;
+
+  if (guessTime <= 0) guessTime = timeDecrease;
 }
 
 // Play a sound file
@@ -45,38 +51,6 @@ function playSound(file, volume = 0.25) {
   let audio = new Audio('sound/' + file);
   audio.volume = volume;
   audio.play();
-}
-
-// Render alphabet buttons
-function renderButtons(container, alphabet, layout, callback) {
-  container.innerHTML = '';
-
-  if (layout === 'ABCDEF') {
-    // Clone and sort alphabet
-    alphabet = alphabet.slice(0).sort();
-  }
-
-  for (let i = 0; i < alphabet.length; i++) {
-    let elItem = document.createElement('li');
-    let elButton = document.createElement('button');
-    elButton.classList.add('btn');
-    elButton.classList.add('btn--letter');
-    elButton.value = alphabet[i];
-    elButton.textContent = alphabet[i];
-    elButton.removeEventListener('click', callback);
-    elButton.addEventListener('click', callback);
-
-    // Dialog focus trap
-    if (document.querySelector('.dialog').style.display !== 'none') {
-      elButton.tabIndex = -1;
-    }
-
-    elItem.appendChild(elButton);
-    container.appendChild(elItem);
-  }
-
-  window.removeEventListener('keyup', callback);
-  window.addEventListener('keyup', callback);
 }
 
 // Format time
@@ -90,6 +64,7 @@ function formatTime(time) {
   return { minutes: minutes, seconds: seconds };
 }
 
+// Callback for dialog
 function dialogHandler(event) {
   let dialog = document.querySelector('.dialog');
 
@@ -114,52 +89,10 @@ function dialogHandler(event) {
   }
 }
 
-// Render dialog
-function renderDialog(title, message = null, buttons, className = null) {
-  let container = document.querySelector('.dialog__content');
-  let heading = container.querySelector('h2');
-  let footer = container.querySelector('.dialog__footer');
-
-  window.removeEventListener('load', dialogHandler);
-  window.removeEventListener('resize', dialogHandler);
-  window.removeEventListener('keydown', dialogHandler);
-  window.addEventListener('load', dialogHandler);
-  window.addEventListener('resize', dialogHandler);
-  window.addEventListener('keydown', dialogHandler);
-
-  footer.innerHTML = '';
-
-  // Loop through buttons and set up listener
-  for (let button of buttons) {
-    let elButton = document.createElement('button');
-    elButton.classList.add('btn');
-    elButton.textContent = button.text;
-    elButton.addEventListener('click', button.callback);
-
-    footer.appendChild(elButton);
-  }
-
-  heading.textContent = title;
-  container.prepend(heading);
-
-  if (className) {
-    container.className = 'dialog__content';
-    container.classList.add(className);
-  }
-
-  // Render message if set
-  if (message) {
-    let elMessage;
-
-    if (!document.querySelector('.dialog__message')) {
-      elMessage = document.createElement('p');
-      elMessage.className = 'dialog__message';
-      container.insertBefore(elMessage, container.querySelector('h2').nextSibling);
-    }
-
-    elMessage = document.querySelector('.dialog__message');
-    elMessage.innerHTML = message;
-  }
-
-  document.querySelector('.dialog').style.display = 'flex';
+// Callback for sound option buttons
+function soundHandler() {
+  soundEnabled = this.value;
+  localStorage.soundEnabled = this.value;
+  playSound(sounds.dialogButton, 0.05);
+  translate();
 }
