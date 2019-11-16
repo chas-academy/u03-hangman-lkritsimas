@@ -8,7 +8,7 @@ function fetchLanguage() {
   let languageSaved = localStorage.getItem('language');
 
   if (languageSaved === null) {
-    languageSaved = 'en';
+    languageSaved = _default.language;
     setLanguage(languageSaved);
   }
 
@@ -32,7 +32,7 @@ function getLayout() {
   let layout = localStorage.getItem('layout');
 
   if (layout === null) {
-    layout = 'ABCDEF';
+    layout = _default.layout;
     setLayout(layout);
   }
 
@@ -49,7 +49,7 @@ function isSoundEnabled() {
   let isEnabled = localStorage.getItem('soundEnabled');
 
   if (isEnabled === null) {
-    isEnabled = 1;
+    isEnabled = _default.soundEnabled;
     setSoundEnabled(isEnabled);
   }
 

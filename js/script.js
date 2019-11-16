@@ -1,5 +1,11 @@
 // Note: Implementing multi-lang support was harder than I had expected, readability suffered because of it... Oh well!
 
+let _default = {
+  language: 'en',
+  layout: 'QWERTY',
+  soundEnabled: 1
+};
+
 // Available languages
 let languages = ['en', 'sv'];
 
