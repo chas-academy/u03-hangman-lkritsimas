@@ -13,11 +13,14 @@
             <h1>Hangman</h1>
         </header>
         <main>
+            <!-- Dialog window -->
             <aside class="dialog">
+                <!-- Game options -->
                 <section class="dialog__content">
                     <h2>New game</h2>
                     <section id="language">
                         <h3>Language</h3>
+                        <!-- Available languages will be added here -->
                         <ul></ul>
                     </section>
                     <section id="layout">
@@ -34,17 +37,23 @@
                             <li><button class="btn btn--flat" value="0">Off</button></li>
                         </ul>
                     </section>
+                    <!-- Footer that will contain dialog buttons -->
                     <footer class="dialog__footer"></footer>
                 </section>
             </aside>
+            <!-- Game rendering -->
             <section>
+                <!-- Current selected word -->
                 <h2 id="word"></h2>
                 <div class="figurewrapper">
+                    <!-- Countdown timer -->
                     <p id="timer"></p>
+                    <!-- Hangman image container -->
                     <figure></figure>
                 </div>
             </section>
             <section>
+                <!-- Alphabet button container -->
                 <ul id="alphabet"></ul>
             </section>
         </main>
