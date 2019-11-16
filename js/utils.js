@@ -1,10 +1,15 @@
+/*
+ * "Getters" & "Setters"
+ */
+
 // Get language from /lang/*.json
 function getLanguage() {
   let xhr = new XMLHttpRequest();
   let languageSaved = localStorage.getItem('language');
 
-  if (languageSaved == null) {
-    setLanguage('en');
+  if (languageSaved === null) {
+    languageSaved = 'en';
+    setLanguage(languageSaved);
   }
 
   xhr.onload = function() {
@@ -13,7 +18,7 @@ function getLanguage() {
     }
   };
 
-  xhr.open('GET', `/lang/${languageSaved}.json`, false);
+  xhr.open('GET', `./lang/${languageSaved}.json`, false);
   xhr.send();
 }
 
@@ -24,18 +29,36 @@ function setLanguage(language) {
 
 // Get button layout
 function getLayout() {
-  if (_layout === null) {
-    setLayout('ABCDEF');
+  let layout = localStorage.getItem('layout');
+
+  if (layout === null) {
+    layout = 'ABCDEF';
+    setLayout(layout);
   }
 
-  _layout = localStorage.getItem('layout');
+  return layout;
 }
 
 // Set button layout
-function setLayout() {
-  localStorage.setItem('layout', this.value);
-  playSound(sounds.dialogButton, 0.05);
-  buildLayout();
+function setLayout(layout) {
+  localStorage.setItem('layout', layout);
+  _layout = layout;
+}
+
+function isSoundEnabled() {
+  let isEnabled = localStorage.getItem('soundEnabled');
+
+  if (isEnabled === null) {
+    isEnabled = 1;
+    setSoundEnabled(isEnabled);
+  }
+
+  return isEnabled;
+}
+
+function setSoundEnabled(isEnabled) {
+  _soundEnabled = isEnabled;
+  localStorage.setItem('soundEnabled', isEnabled);
 }
 
 // Set difficulty by decreasing guess time
@@ -45,10 +68,14 @@ function setDifficulty(time, decreaseAmount) {
   if (guessTime <= 0) guessTime = timeDecrease;
 }
 
-// Play a sound file
+/*
+ *  Utility functions
+ */
+
+// Play a sound file if sound is enabled
 function playSound(file, volume = 0.25) {
-  if (!soundEnabled || localStorage.getItem('soundEnabled') == false) return;
-  let audio = new Audio('sound/' + file);
+  if (isSoundEnabled() == 0) return;
+  let audio = new Audio('./sound/' + file);
   audio.volume = volume;
   audio.play();
 }
@@ -63,6 +90,10 @@ function formatTime(time) {
 
   return { minutes: minutes, seconds: seconds };
 }
+
+/*
+ *  Event handlers
+ */
 
 // Callback for dialog
 function dialogHandler(event) {
@@ -95,4 +126,37 @@ function soundHandler() {
   localStorage.soundEnabled = this.value;
   playSound(sounds.dialogButton, 0.05);
   translate();
+}
+
+function layoutHandler() {
+  setLayout(this.value);
+  playSound(sounds.dialogButton, 0.05);
+  buildLayout();
+}
+
+function guessHandler(event) {
+  // Check if not running, guesses have run out or if pressed key is not in alphabet
+  if (!isRunning || guesses === 0 || (event.key && _language.alphabet.indexOf(event.key.toLowerCase()) === -1)) {
+    return;
+  }
+
+  let letter = this.value || event.key;
+  letter = letter.toLowerCase();
+  let elButton = document.querySelector(`button[value=${letter}]`);
+
+  // Check if letter has already been guessed
+  if (guessedLetters.indexOf(letter) !== -1) return;
+
+  // Was the guess right or wrong?
+  if (selectedWord.indexOf(letter) === -1) {
+    guesses--;
+  } else {
+    elButton.classList.add('selected');
+  }
+
+  guessedLetters.push(letter);
+  renderLetters();
+  renderFigure();
+  playSound(sounds.alphabetButton);
+  elButton.disabled = true;
 }

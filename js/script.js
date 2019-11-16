@@ -1,3 +1,5 @@
+// Note: Implementing multi-lang support was harder than I had expected, readability suffered because of it... Oh well!
+
 // Available languages
 let languages = ['en', 'sv'];
 
@@ -33,7 +35,7 @@ let _elapsed;
 let _gameloop;
 
 // Audio
-let soundEnabled = true;
+let _soundEnabled;
 let sounds = {
   dialogButton: 'dialog-button.mp3',
   alphabetButton: 'alphabet-button.mp3',
@@ -57,7 +59,6 @@ let images = {
 let elFigure = document.querySelector('.figurewrapper figure');
 let elTimer = document.querySelector('#timer');
 let elDialog = document.querySelector('.dialog');
-let dialogButtons = document.querySelectorAll('.dialog__footer button');
 let elButtonContainer = document.querySelector('#alphabet');
 let elWord = document.querySelector('#word');
 
@@ -71,43 +72,18 @@ function main() {
   render();
 }
 
-function guess(event) {
-  // Check if not running, guesses have run out or if pressed key is not in alphabet
-  if (!isRunning || guesses === 0 || (event.key && _language.alphabet.indexOf(event.key.toLowerCase()) === -1)) {
-    return;
-  }
-
-  let letter = this.value || event.key;
-  letter = letter.toLowerCase();
-  let elButton = document.querySelector(`button[value=${letter}]`);
-
-  // Check if letter has already been guessed
-  if (guessedLetters.indexOf(letter) !== -1) return;
-
-  // Was the guess right or wrong?
-  if (selectedWord.indexOf(letter) === -1) {
-    guesses--;
-  } else {
-    elButton.classList.add('selected');
-  }
-
-  guessedLetters.push(letter);
-  renderLetters();
-  renderFigure();
-  playSound(sounds.alphabetButton);
-  elButton.disabled = true;
-}
-
 function start() {
   playSound(sounds.dialogButton);
 
   elTimer.classList.remove('text-red');
 
+  // Set initial difficulty
   setDifficulty(time, timeDecrease);
 
   // Get a random word from word list
   selectedWord = _language.wordList[Math.floor(Math.random() * _language.wordList.length)];
 
+  // Reset guesses and guessed letters
   guesses = 6;
   guessedLetters = [];
 
@@ -116,7 +92,7 @@ function start() {
 
   elDialog.style.display = 'none';
 
-  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guessHandler);
   renderLetters();
 
   clearInterval(_gameloop);
@@ -160,7 +136,7 @@ function translate() {
 
   let elSound = document.querySelector('#sound');
   elSound.querySelector('h3').textContent = _language.sound;
-  soundEnabled = localStorage.getItem('soundEnabled');
+  _soundEnabled = isSoundEnabled();
 
   // Sound buttons
   document.querySelectorAll('#sound button').forEach(function(button) {
@@ -173,7 +149,7 @@ function translate() {
       button.textContent = _language.off;
     }
 
-    if (button.value == soundEnabled) {
+    if (button.value == _soundEnabled) {
       button.classList.add('selected');
     } else {
       button.classList.remove('selected');
@@ -191,19 +167,19 @@ function translate() {
   }
 
   // Render alphabet buttons
-  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guessHandler);
 }
 
 // Build button layout
 function buildLayout() {
-  getLayout();
+  _layout = getLayout();
 
   document.querySelector('#layout h3').textContent = _language.buttonLayout;
 
   // Layout buttons
   document.querySelectorAll('#layout button').forEach(function(button) {
-    button.removeEventListener('click', setLayout);
-    button.addEventListener('click', setLayout);
+    button.removeEventListener('click', layoutHandler);
+    button.addEventListener('click', layoutHandler);
 
     if (_layout === button.value) {
       button.classList.add('selected');
@@ -213,7 +189,7 @@ function buildLayout() {
   });
 
   // Render alphabet buttons
-  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guessHandler);
 }
 
 // Player won
@@ -227,7 +203,7 @@ function win() {
     [{ text: _language.playAgain, callback: start }],
     'dialog--win'
   );
-  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guessHandler);
   playSound(sounds.correct);
 }
 
@@ -246,12 +222,13 @@ function end() {
     ],
     'dialog--lose'
   );
-  renderButtons(elButtonContainer, _language.alphabet, _layout, guess);
+  renderButtons(elButtonContainer, _language.alphabet, _layout, guessHandler);
   playSound(sounds.incorrect);
 }
 
 // Get language (default: English)
 getLanguage();
+isSoundEnabled();
 
 (function reset() {
   buildLayout();
