@@ -113,14 +113,15 @@ main {
         &__letter {
             position: relative;
             text-transform: uppercase;
-            padding-right: 4px;
+            text-align: center;
         }
 
         &__underline {
             position: absolute;
-            top: 0;
-            left: -2px;
+            top: 15%;
+            left: 0;
             right: 0;
+            font-size: 80%;
         }
 
         &__word {
@@ -130,7 +131,7 @@ main {
         }
 
         &__word:not(:only-child) {
-            margin-right: 24px;
+            // margin-right: 24px;
         }
     }
 

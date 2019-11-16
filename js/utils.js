@@ -91,6 +91,20 @@ function formatTime(time) {
   return { minutes: minutes, seconds: seconds };
 }
 
+// Get a random word from word list
+function generateRandomWord() {
+  return _language.wordList[Math.floor(Math.random() * _language.wordList.length)];
+}
+
+// Measure a strings width in pixels
+function measureTextWidth(text, font, fontSize, padding = 0) {
+  let canvas = document.createElement('canvas');
+  let context = canvas.getContext('2d');
+  context.font = `${fontSize}px ${font}`;
+
+  return context.measureText(text).width + padding;
+}
+
 /*
  *  Event handlers
  */

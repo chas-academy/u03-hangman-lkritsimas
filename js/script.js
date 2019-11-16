@@ -8,6 +8,11 @@ let _language;
 // Keyboard layout (ABCDEF, QWERTY)
 let _layout;
 
+// Minimum font size when resizing text
+let minFontSize = 56;
+
+//  Word from previous round
+let previousWord = null;
 // Current word (randomly selected)
 let selectedWord;
 // Letters that have been guessed so far
@@ -56,6 +61,7 @@ let images = {
 };
 
 // Elements
+let elMain = document.querySelector('main');
 let elFigure = document.querySelector('.figurewrapper figure');
 let elTimer = document.querySelector('#timer');
 let elDialog = document.querySelector('.dialog');
@@ -73,15 +79,23 @@ function main() {
 }
 
 function start() {
-  playSound(sounds.dialogButton);
+  // Get a random word from word list
+  selectedWord = generateRandomWord();
 
+  // Prevent current word from being the same as the previous one
+  if (selectedWord === previousWord && _language.wordList.length > 1) {
+    console.log(selectedWord, previousWord);
+    // Restart game until a different word has been generated
+    start();
+  } else {
+    previousWord = selectedWord;
+  }
+
+  playSound(sounds.dialogButton);
   elTimer.classList.remove('text-red');
 
   // Set initial difficulty
   setDifficulty(time, timeDecrease);
-
-  // Get a random word from word list
-  selectedWord = _language.wordList[Math.floor(Math.random() * _language.wordList.length)];
 
   // Reset guesses and guessed letters
   guesses = 6;

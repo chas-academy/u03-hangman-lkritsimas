@@ -76,9 +76,37 @@ function renderLetters() {
       elWordWrapper.appendChild(elLetter);
     }
 
-    // Add score to compensate for each whitespace character
+    // Current word as underscores
+    let underscoreWord = word.replace(/./gi, '_');
+    // Get computed style for current word
+    let elWordComputedStyle = getComputedStyle(elWord);
+    // Parse integer to get rid of "px"
+    let fontSize = parseInt(elWordComputedStyle.fontSize);
+    // Measure word width in pixels
+    let wordWidth = measureTextWidth(underscoreWord, elWordComputedStyle.fontFamily, fontSize);
+    let padding = 0;
+
     if (indexWord !== words.length - 1) {
+      // Add score to compensate for each whitespace character
       score++;
+
+      // Apply padding if word is within bounds of container
+      if (elMain.clientWidth > wordWidth) {
+        padding = measureTextWidth('_', elWordComputedStyle.fontFamily, fontSize);
+        wordWidth += padding;
+        elWordWrapper.style.marginRight = `${padding}px`;
+      }
+    }
+
+    // Decrease font size as long as word is wider than container
+    while (elMain.clientWidth < wordWidth) {
+      if (minFontSize && fontSize <= minFontSize) {
+        break;
+      }
+
+      fontSize--;
+      wordWidth = measureTextWidth(underscoreWord, elWordComputedStyle.fontFamily, fontSize, padding);
+      elWordWrapper.style.fontSize = `${fontSize}px`;
     }
 
     elWord.appendChild(elWordWrapper);
