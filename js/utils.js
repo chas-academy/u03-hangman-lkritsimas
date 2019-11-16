@@ -3,7 +3,7 @@
  */
 
 // Get language from /lang/*.json
-function getLanguage() {
+function fetchLanguage() {
   let xhr = new XMLHttpRequest();
   let languageSaved = localStorage.getItem('language');
 

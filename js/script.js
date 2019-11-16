@@ -126,7 +126,7 @@ function translate() {
     button.addEventListener('click', function() {
       playSound(sounds.dialogButton, 0.05);
       setLanguage(language);
-      getLanguage();
+      fetchLanguage();
       translate();
       buildLayout();
     });
@@ -229,7 +229,7 @@ function end() {
 // Initialize game
 (function init() {
   // Get language (default: English)
-  getLanguage();
+  fetchLanguage();
   isSoundEnabled();
   buildLayout();
   translate();
