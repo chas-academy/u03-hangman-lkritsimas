@@ -99,29 +99,38 @@ main {
     }
 
     // Current selected word
-    #word {
+    .selectedword {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        font-size: 5em;
-        margin-top: -48px;
-        margin-bottom: 16px;
 
-        .letter {
+        &__heading {
+            font-size: 5em;
+            margin-top: -48px;
+            margin-bottom: 16px;
+        }
+
+        &__letter {
             position: relative;
             text-transform: uppercase;
             padding-right: 4px;
         }
 
-        .underline {
+        &__underline {
             position: absolute;
             top: 0;
             left: -2px;
             right: 0;
         }
 
-        .spacer {
-            padding: 0 8px;
+        &__word {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        &__word:not(:only-child) {
+            margin-right: 24px;
         }
     }
 

@@ -60,7 +60,7 @@ let elFigure = document.querySelector('.figurewrapper figure');
 let elTimer = document.querySelector('#timer');
 let elDialog = document.querySelector('.dialog');
 let elButtonContainer = document.querySelector('#alphabet');
-let elWord = document.querySelector('#word');
+let elWord = document.querySelector('.selectedword__heading');
 
 function main() {
   if (!isRunning) return;
@@ -213,7 +213,7 @@ function end() {
   winCount = 0;
   renderDialog(
     _language.gameOver,
-    `${_language.theWordWas} <span class="word">${selectedWord}</span>`,
+    `${_language.theWordWas} <span class="correct-word">${selectedWord}</span>`,
     [
       {
         text: _language.retry,

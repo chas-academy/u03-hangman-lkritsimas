@@ -49,27 +49,40 @@ function renderLetters() {
   let score = 0;
   elWord.innerHTML = '';
 
-  for (let i = 0; i < selectedWord.length; i++) {
-    let letter = selectedWord[i];
+  // Split words by whitespace
+  let splitWords = selectedWord.split(' ');
 
-    let elLetter = document.createElement('span');
-    elLetter.className = 'letter';
+  // Loop through words
+  splitWords.forEach(function(word, indexWord, words) {
+    // Container for separate words
+    let elWordWrapper = document.createElement('span');
+    elWordWrapper.innerHTML = '';
+    elWordWrapper.className = 'selectedword__word';
 
-    // Render underscores or correctly guessed letter
-    if (guessedLetters.length > 0 && guessedLetters.indexOf(letter) !== -1) {
-      score++;
-      elLetter.innerHTML += '<span class="underline">' + letter + '</span>';
-      elLetter.innerHTML += '_';
-    } else {
-      if (letter === ' ') {
+    // Loop through letters in current split word
+    for (let indexLetter = 0; indexLetter < word.length; indexLetter++) {
+      let letter = word[indexLetter];
+      let elLetter = document.createElement('span');
+      elLetter.className = 'selectedword__letter';
+
+      // Render underscores or correctly guessed letter
+      if (guessedLetters.length > 0 && guessedLetters.indexOf(letter) !== -1) {
         score++;
-        elLetter.innerHTML += '<span class="spacer"></span>';
+        elLetter.innerHTML += '<span class="selectedword__underline">' + letter + '</span>';
+        elLetter.innerHTML += '_';
       } else {
         elLetter.innerHTML += '_';
       }
+      elWordWrapper.appendChild(elLetter);
     }
-    elWord.appendChild(elLetter);
-  }
+
+    // Add score to compensate for each whitespace character
+    if (indexWord !== words.length - 1) {
+      score++;
+    }
+
+    elWord.appendChild(elWordWrapper);
+  });
 
   // Winner!
   if (score === selectedWord.length) win();
