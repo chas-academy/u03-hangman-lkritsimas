@@ -26,7 +26,7 @@ function render() {
   elTimer.innerText = txt;
 }
 
-// Draw canvas
+// Draw figure
 function renderFigure() {
   if (guesses >= 0 && guesses < 6) renderImage(elFigure, images[guesses]);
 }

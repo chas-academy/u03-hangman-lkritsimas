@@ -78,8 +78,8 @@ function guess(event) {
   }
 
   let letter = this.value || event.key;
-  let elButton = document.querySelector(`button[value=${letter}]`);
   letter = letter.toLowerCase();
+  let elButton = document.querySelector(`button[value=${letter}]`);
 
   // Check if letter has already been guessed
   if (guessedLetters.indexOf(letter) !== -1) return;
