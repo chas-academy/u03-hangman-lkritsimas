@@ -113,34 +113,6 @@ function renderLetters() {
     elWord.appendChild(elWordWrapper);
   });
 
-  // let wordWrapperMaxHeight = 300;
-  // let elsWordWrapper = document.querySelectorAll('.selectedword__word');
-  // while (elWord.clientHeight >= wordWrapperMaxHeight && previousFontSize === null) {
-  //   if (
-  //     (minFontSize && fontSize <= minFontSize) ||
-  //     (wordWrapperMaxHeight && elWord.clientHeight <= wordWrapperMaxHeight)
-  //   ) {
-  //     break;
-  //   }
-
-  //   fontSize--;
-  //   for (let wrapper of elsWordWrapper) {
-  //     padding = measureTextWidth('_', elWordComputedStyle.fontFamily, fontSize);
-  //     wrapper.style.marginRight = `${padding}px`;
-  //     wrapper.style.fontSize = `${fontSize}px`;
-  //   }
-  // }
-
-  // if (previousFontSize !== null) {
-  //   for (let wrapper of elsWordWrapper) {
-  //     padding = measureTextWidth('_', elWordComputedStyle.fontFamily, previousFontSize);
-  //     wrapper.style.marginRight = `${padding}px`;
-  //     wrapper.style.fontSize = `${previousFontSize}px`;
-  //   }
-  // } else {
-  //   previousFontSize = fontSize;
-  // }
-
   // Winner!
   if (score === selectedWord.length) win();
 }
