@@ -129,10 +129,6 @@ main {
             flex-wrap: wrap;
             justify-content: flex-start;
         }
-
-        &__word:not(:only-child) {
-            // margin-right: 24px;
-        }
     }
 
     // Image container

@@ -79,7 +79,9 @@ function main() {
   if (!isRunning) return;
 
   let now = +new Date();
+  // Remaining time in seconds
   _time = Math.round(guessTime - (now - startTime) * 0.001);
+  // Elapsed time in seconds
   _elapsed = Math.round(((now - startTime) * 0.001) % 60);
 
   render();
