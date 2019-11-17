@@ -15,12 +15,12 @@ function render() {
     elTimer.classList.add('text-red');
 
     // Play tick tock sound
-    if (_elapsed !== prevSecond) {
-      playSound(prevSecond % 2 ? sounds.tick : sounds.tock);
+    if (_elapsed !== previousSecond) {
+      playSound(previousSecond % 2 ? sounds.tick : sounds.tock);
     }
   }
 
-  prevSecond = _elapsed;
+  previousSecond = _elapsed;
   elTimer.innerText = currentTime;
 }
 
@@ -46,11 +46,16 @@ function renderImage(element, file) {
 
 // Render the letters/underscores for the current word
 function renderLetters() {
+  // Current score - based on amount of correct characters
   let score = 0;
-  elWord.innerHTML = '';
-
+  // Get computed style for current word
+  let elWordComputedStyle = getComputedStyle(elWord);
+  // Parse integer to get rid of "px"
+  let fontSize = parseInt(elWordComputedStyle.fontSize);
   // Split words by whitespace
   let splitWords = selectedWord.split(' ');
+
+  elWord.innerHTML = '';
 
   // Loop through words
   splitWords.forEach(function(word, indexWord, words) {
@@ -78,10 +83,6 @@ function renderLetters() {
 
     // Current word as underscores
     let underscoreWord = word.replace(/./gi, '_');
-    // Get computed style for current word
-    let elWordComputedStyle = getComputedStyle(elWord);
-    // Parse integer to get rid of "px"
-    let fontSize = parseInt(elWordComputedStyle.fontSize);
     // Measure word width in pixels
     let wordWidth = measureTextWidth(underscoreWord, elWordComputedStyle.fontFamily, fontSize);
     let padding = 0;
@@ -111,6 +112,34 @@ function renderLetters() {
 
     elWord.appendChild(elWordWrapper);
   });
+
+  // let wordWrapperMaxHeight = 300;
+  // let elsWordWrapper = document.querySelectorAll('.selectedword__word');
+  // while (elWord.clientHeight >= wordWrapperMaxHeight && previousFontSize === null) {
+  //   if (
+  //     (minFontSize && fontSize <= minFontSize) ||
+  //     (wordWrapperMaxHeight && elWord.clientHeight <= wordWrapperMaxHeight)
+  //   ) {
+  //     break;
+  //   }
+
+  //   fontSize--;
+  //   for (let wrapper of elsWordWrapper) {
+  //     padding = measureTextWidth('_', elWordComputedStyle.fontFamily, fontSize);
+  //     wrapper.style.marginRight = `${padding}px`;
+  //     wrapper.style.fontSize = `${fontSize}px`;
+  //   }
+  // }
+
+  // if (previousFontSize !== null) {
+  //   for (let wrapper of elsWordWrapper) {
+  //     padding = measureTextWidth('_', elWordComputedStyle.fontFamily, previousFontSize);
+  //     wrapper.style.marginRight = `${padding}px`;
+  //     wrapper.style.fontSize = `${previousFontSize}px`;
+  //   }
+  // } else {
+  //   previousFontSize = fontSize;
+  // }
 
   // Winner!
   if (score === selectedWord.length) win();

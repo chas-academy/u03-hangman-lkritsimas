@@ -1,5 +1,6 @@
 // Note: Implementing multi-lang support was harder than I had expected, readability suffered because of it... Oh well!
 
+// Default options
 let _default = {
   language: 'en',
   layout: 'QWERTY',
@@ -32,7 +33,7 @@ let guessTime;
 // When did the game start?
 let startTime;
 // Previous second since current time (needed for the final 10 seconds)
-let prevSecond;
+let previousSecond;
 // Is the game running?
 let isRunning;
 
@@ -90,7 +91,6 @@ function start() {
 
   // Prevent current word from being the same as the previous one
   if (selectedWord === previousWord && _language.wordList.length > 1) {
-    console.log(selectedWord, previousWord);
     // Restart game until a different word has been generated
     start();
   } else {
